@@ -1,7 +1,7 @@
 [
 {
   "modid": "gomod",
-  "name": "Go Mod",
+  "name": "Go",
   "description": "Maintains a list of named locations for teleport",
   "version": "${version}",
   "mcversion": "${mcversion}",
