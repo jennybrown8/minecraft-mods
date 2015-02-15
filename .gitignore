@@ -1,4 +1,9 @@
 build
 *.class
 .gradle
+config
+logs
+saves
+usernamecache.json
+options.txt
 
