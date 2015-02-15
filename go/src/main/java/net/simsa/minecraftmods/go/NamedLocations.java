@@ -15,6 +15,7 @@ public class NamedLocations extends WorldSavedData {
 
     Map<String, BlockPos> positions = new HashMap<String, BlockPos>();
     Map<String, Boolean> opRequired = new HashMap<String, Boolean>();
+    Map<String, Integer> dimensions = new HashMap<String, Integer>();
 
     public NamedLocations(String mapName) {
 	super(mapName);
@@ -27,11 +28,16 @@ public class NamedLocations extends WorldSavedData {
 	return (opRequired.get(name) != null && opRequired.get(name).equals(Boolean.TRUE));
     }
 
-    public void savePosition(String name, BlockPos pos, boolean op) {
+    public void savePosition(String name, BlockPos pos, int dimension, boolean op) {
 	name = name.toLowerCase();
 	positions.put(name, pos);
 	opRequired.put(name, new Boolean(op));
+	dimensions.put(name, dimension);
 	markDirty();
+    }
+
+    public int getDimension(String name) {
+	return dimensions.get(name) == null ? 0 : dimensions.get(name);
     }
 
     public SortedSet<String> listPositions(boolean includeOp) {
@@ -49,6 +55,7 @@ public class NamedLocations extends WorldSavedData {
 	name = name.toLowerCase();
 	positions.remove(name);
 	opRequired.remove(name);
+	dimensions.remove(name);
 	markDirty();
     }
 
@@ -64,9 +71,10 @@ public class NamedLocations extends WorldSavedData {
 	if (result == null) {
 	    result = new NamedLocations(key);
 	    storage.setData(key, result);
-	    // default /go home to the spawn point but op can override later.
-	    result.savePosition("home", world.getSpawnPoint(), false);
+	    // default /go home to the spawn point
+	    result.savePosition("home", world.getSpawnPoint(), 0, false);
 	}
+        result.savePosition("home", world.getSpawnPoint(), 0, false);
 	return result;
     }
 
@@ -81,6 +89,9 @@ public class NamedLocations extends WorldSavedData {
 	    } else if (key.endsWith(":op")) {
 		String location = key.substring(0, key.length() - ":op".length());
 		opRequired.put(location, nbt.getBoolean(key));
+	    } else if (key.endsWith(":dim")) {
+		String location = key.substring(0, key.length() - ":dim".length());
+		dimensions.put(location, nbt.getInteger(key));
 	    } else {
 		System.err.println("Unrecognized key format " + key);
 	    }
@@ -96,6 +107,7 @@ public class NamedLocations extends WorldSavedData {
 	    pos[2] = positions.get(locationName).getZ();
 	    nbt.setIntArray(locationName + ":pos", pos);
 	    nbt.setBoolean(locationName + ":op", isOpOnly(locationName));
+	    nbt.setInteger(locationName + ":dim", dimensions.get(locationName));
 	}
 
     }
