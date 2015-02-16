@@ -2,7 +2,6 @@ package net.simsa.minecraftmods.go;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import scala.actors.threadpool.Arrays;
 
 public class MCUtil {
 

@@ -1,14 +1,11 @@
 package net.simsa.minecraftmods.go;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Mod(modid = GoMod.MODID, version = GoMod.VERSION, name = GoMod.NAME)
 public class GoMod {
@@ -21,6 +18,7 @@ public class GoMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
 	System.out.println("Go - Registering event listeners.");
+
 	// player login event
 	FMLCommonHandler.instance().bus().register(this);
 	// world load event
@@ -30,26 +28,28 @@ public class GoMod {
     // register commands here
     @EventHandler
     public void onServerStarting(FMLServerStartingEvent event) {
-	System.out.println("Go - Server Starting.");
-	System.out.println("Go - World name is " + event.getServer().getWorldName());
+	System.out.println("Go - registering /go command for world " + event.getServer().getWorldName());
 	gocommand = new CommandGo();
 	event.registerServerCommand(gocommand);
-	System.out.println("Go - Registered CommandGo.");
     }
 
+    // @formatter:off
+    /*
     @SubscribeEvent
     public void onLogin(PlayerLoggedInEvent event) {
 	System.out.println("Go - Player logged in.");
     }
+    */
 
+    /*
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
 	if (event.world == null) {
 	    return;
 	}
-	//MyWorldData.forWorld(event.world).readFromNBT(nbt);
 	String worldname = event.world.getWorldInfo().getWorldName();
-	System.out.println("Go - Spawn point for " + worldname + " is " + event.world.getSpawnPoint());
-	// World spawn in current DevWorld: 451 64 -362,
     }
+    */
+    // @formatter:on
+
 }
