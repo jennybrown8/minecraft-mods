@@ -57,8 +57,6 @@ public class CommandGo extends CommandBase {
 	System.out.println("Is player an op? " + MCUtil.isOp(player));
 
 	// TODO - Handle operator-only locations and single-player mode
-	// TODO - Handle safe-landing checks prior to teleporting
-	// TODO - QA
 	NamedLocations globalLocations = Storage.forGlobal(sender.getEntityWorld());
 	NamedLocations sameDimension = Storage.forWorld(sender.getEntityWorld());
 
