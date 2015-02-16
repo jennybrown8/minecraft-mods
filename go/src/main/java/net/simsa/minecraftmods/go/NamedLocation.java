@@ -1,7 +1,10 @@
 package net.simsa.minecraftmods.go;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * Represents a saved named location which can be a teleport destination
@@ -40,7 +43,7 @@ public class NamedLocation implements Comparable<NamedLocation> {
     }
 
     public boolean isVisibleToPlayer(ICommandSender player) {
-	if (this.operatorOnly && !MCUtil.isOp(player.getName()))
+	if (this.operatorOnly && !MCUtil.isOp(player))
 	    return false;
 	if (!this.crossDimension && player.getCommandSenderEntity().dimension != this.dimension)
 	    return false;
@@ -143,10 +146,22 @@ public class NamedLocation implements Comparable<NamedLocation> {
      * by jumping). It's not a super rigorous check but it reduces the
      * likelihood of insta-deaths.
      * 
-     * @return true if the landing is survivable
+     * @return true if the landing is probably survive-able
      */
-    public boolean isSafeLanding() {
-	return true; // TODO
+    public boolean isSafeLanding(World world) {
+	Material head_mat = world.getBlockState(blockPos.up(1)).getBlock().getMaterial();
+	Block head_block = world.getBlockState(blockPos.up(1)).getBlock();
+	Block foot_block = world.getBlockState(blockPos).getBlock();
+	Block floor_block = world.getBlockState(blockPos.down(1)).getBlock();
+	Block abovehead_block = world.getBlockState(blockPos.up(2)).getBlock();
+
+	if (!floor_block.isPassable(world, blockPos.down(1)) && foot_block.isPassable(world, blockPos)
+		&& head_block.isPassable(world, blockPos.up(1))
+		&& abovehead_block.isPassable(world, blockPos.up(2)) && !head_mat.isLiquid()) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**

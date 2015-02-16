@@ -23,7 +23,7 @@ public class NamedLocations extends WorldSavedData {
     }
 
     public void saveSharedLocation(ICommandSender commandSender, NamedLocation nl) {
-	if (!MCUtil.isOp(commandSender.getCommandSenderEntity().getName()) && !MCUtil.isSinglePlayer()) {
+	if (!MCUtil.isOp(commandSender) && !MCUtil.isSinglePlayer()) {
 	    return;
 	}
 	locations.put(nl.getName(), nl);
@@ -31,7 +31,7 @@ public class NamedLocations extends WorldSavedData {
     }
 
     public NamedLocation getByName(String locName, ICommandSender commandSender) {
-	boolean playerIsOp = MCUtil.isOp(commandSender.getName());
+	boolean playerIsOp = MCUtil.isOp(commandSender);
 	int playerCurrentDimension = commandSender.getCommandSenderEntity().dimension;
 
 	if (locations.containsKey(locName)
@@ -57,7 +57,7 @@ public class NamedLocations extends WorldSavedData {
     }
 
     public boolean deleteSharedLocation(ICommandSender commandSender, String name) {
-	if (!MCUtil.isOp(commandSender.getCommandSenderEntity().getName()) && !MCUtil.isSinglePlayer()) {
+	if (!MCUtil.isOp(commandSender) && !MCUtil.isSinglePlayer()) {
 	    return false;
 	}
 	name = name.toLowerCase();

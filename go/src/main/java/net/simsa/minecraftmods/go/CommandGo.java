@@ -28,7 +28,7 @@ public class CommandGo extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-	if (!MCUtil.isOp(sender.getCommandSenderEntity().getName()) && !MCUtil.isSinglePlayer()) {
+	if (!MCUtil.isOp(sender) && !MCUtil.isSinglePlayer()) {
 	    return "/go\n/go [locationName]";
 	}
 	return "/go\n/go [locationName]\n/go add [locationName]\n/go rm [locationName]\n/go add-global [locationName]\n/go rm-global [locationName]";
@@ -54,7 +54,7 @@ public class CommandGo extends CommandBase {
     public void execute(ICommandSender sender, String[] args) throws CommandException {
 	EntityPlayer player = (EntityPlayer) sender;
 	System.out.println("Player " + player.getName() + " is running /go");
-	System.out.println("Is player an op? " + MCUtil.isOp(player.getName()));
+	System.out.println("Is player an op? " + MCUtil.isOp(player));
 
 	// TODO - Handle operator-only locations and single-player mode
 	// TODO - Handle safe-landing checks prior to teleporting
@@ -81,7 +81,7 @@ public class CommandGo extends CommandBase {
     }
 
     private void remove(ICommandSender sender, String loc, NamedLocations locations, EntityPlayer player) {
-	if (!MCUtil.isOp(player.getName()) && !MCUtil.isSinglePlayer()) {
+	if (!MCUtil.isOp(player) && !MCUtil.isSinglePlayer()) {
 	    player.addChatComponentMessage(new ChatComponentText("Error: You must be an operator."));
 	}
 	loc = loc.toLowerCase();
@@ -101,7 +101,7 @@ public class CommandGo extends CommandBase {
     }
 
     private void add(EntityPlayer player, String loc, NamedLocations locations, boolean crossDimensional) {
-	if (!MCUtil.isOp(player.getName()) && !MCUtil.isSinglePlayer()) {
+	if (!MCUtil.isOp(player) && !MCUtil.isSinglePlayer()) {
 	    player.addChatComponentMessage(new ChatComponentText("Error: You must be an operator."));
 	}
 
@@ -113,10 +113,15 @@ public class CommandGo extends CommandBase {
 	    NamedLocation nl = new NamedLocation(loc, player.getPosition(), player.dimension);
 	    nl.setOperatorOnly(false);
 	    nl.setCrossDimensional(crossDimensional);
-	    locations.saveSharedLocation(player, nl);
-	    player.addChatComponentMessage(new ChatComponentText("Added location " + loc + " as ("
-		    + MCUtil.dimensionName(player.dimension) + " " + player.getPosition().getX() + ","
-		    + player.getPosition().getY() + "," + player.getPosition().getZ() + ")"));
+	    if (!nl.isSafeLanding(player.getEntityWorld())) {
+		player.addChatComponentMessage(new ChatComponentText(
+			"Cannot add: Location is not safe.  Make sure you have a solid floor and air above your head."));
+	    } else {
+		locations.saveSharedLocation(player, nl);
+		player.addChatComponentMessage(new ChatComponentText("Added location " + loc + " as ("
+			+ MCUtil.dimensionName(player.dimension) + " " + player.getPosition().getX() + ","
+			+ player.getPosition().getY() + "," + player.getPosition().getZ() + ")"));
+	    }
 	}
     }
 
@@ -147,13 +152,23 @@ public class CommandGo extends CommandBase {
 	    return;
 	}
 	BlockPos pos = nl.getBlockPos();
+	if (!nl.isSafeLanding(player.getEntityWorld())) {
+	    player.addChatComponentMessage(new ChatComponentText("Uh-oh! Location " + loc
+		    + " is no longer a safe landing!  Canceling teleport."));
+	    return;
+	}
+
+	if (player.ridingEntity != null) {
+	    player.dismountEntity(player.ridingEntity);
+	}
+
 	int destinationDimension = nl.getDimension();
 	String dimName = MCUtil.dimensionName(destinationDimension);
 	boolean sameDimension = (destinationDimension == player.dimension);
 	if (destinationDimension != player.dimension) {
 	    player.travelToDimension(destinationDimension);
 	}
-	player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+	player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5);
 	player.addChatComponentMessage(new ChatComponentText("Teleporting you to " + loc + " " + " ("
 		+ (!sameDimension ? dimName + " " : "") + pos.getX() + ", " + pos.getY() + ", " + pos.getZ()
 		+ ")"));
