@@ -4,28 +4,36 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 
 public class Storage {
-    final static String key = "net.simsa.minecraftmods.go";
+    final static String globalkey = "net.simsa.minecraftmods.go:global";
+    final static String dimkey = "net.simsa.minecraftmods.go:dim";
 
     public Storage() {
-	// TODO Auto-generated constructor stub
     }
-    public static NamedLocations forWorld(World world) {
+    
+    
+    public static NamedLocations forGlobal(World world) {
 	// Create/retrieve the list of locations that are cross-dimensional
-	//MapStorage globalStorage = world.getMapStorage();
-
-
+	MapStorage storage = world.getMapStorage();
+	NamedLocations result = (NamedLocations) storage.loadData(NamedLocations.class, globalkey);
+	if (result == null) {
+	    result = new NamedLocations(globalkey);
+	    storage.setData(globalkey, result);
+	    // default /go home to the spawn point
+	}
+	result.locations.put("home", new NamedLocation("home", world.getSpawnPoint(), 0, null, false, true));
+	result.markDirty();
+	return result;
+    }
+    
+    
+    public static NamedLocations forWorld(World world) {
 	// Create/retrieve the list of locations for this dimension
 	MapStorage storage = world.getPerWorldStorage();
-	NamedLocations result = (NamedLocations) storage.loadData(NamedLocations.class, key);
+	NamedLocations result = (NamedLocations) storage.loadData(NamedLocations.class, dimkey);
 	if (result == null) {
-	    result = new NamedLocations(key);
-	    storage.setData(key, result);
-	    // default /go home to the spawn point
-	    result.sharedLocations.put("home", new NamedLocation("home", world.getSpawnPoint(), 0, null, false, true));
-	    result.markDirty();
+	    result = new NamedLocations(dimkey);
+	    storage.setData(dimkey, result);
 	}
-        result.sharedLocations.put("home", new NamedLocation("home", world.getSpawnPoint(), 0, null, false, true));
-        result.markDirty();
 	return result;
     }
 }

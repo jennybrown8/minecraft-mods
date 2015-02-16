@@ -52,19 +52,4 @@ public class GoMod {
 	System.out.println("Go - Spawn point for " + worldname + " is " + event.world.getSpawnPoint());
 	// World spawn in current DevWorld: 451 64 -362,
     }
-
-    
-    // TODO - Get this from the server somehow so it's cleaner.
-    public static String dimensionName(int dimension) {
-	switch (dimension) {
-	case 0:
-	    return "Overworld";
-	case -1:
-	    return "Nether";
-	case 1:
-	    return "End";
-	default:
-	    return "Non-Standard";
-	}
-    }
 }
