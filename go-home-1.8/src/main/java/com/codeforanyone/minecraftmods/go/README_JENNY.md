@@ -1,6 +1,6 @@
-Go-Home Mod Features
-----------------------
-The `/go home` command teleports you to world-spawn as long as it's safe to land.  
+Go-Home Minecraft Mod Features
+------------------------------
+The `/go home` command teleports you to Minecraft overworld's world-spawn as long as it's safe to land.  
 
 This is highly convenient for young children or inexperienced players who are afraid to wander
 and possibly get lost.  By typing `/go home` they can always return to the main base built near
