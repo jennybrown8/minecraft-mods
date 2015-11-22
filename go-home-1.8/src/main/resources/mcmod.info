@@ -1,0 +1,16 @@
+[
+{
+  "modid": "gomod",
+  "name": "Go",
+  "description": "Maintains a list of named locations for teleport",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["PathmakerJen"],
+  "credits": "Forge and FML",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
