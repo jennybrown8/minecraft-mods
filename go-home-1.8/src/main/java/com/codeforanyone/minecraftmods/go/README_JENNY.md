@@ -43,6 +43,14 @@ Right now, only operators are able to add/remove named locations on multi-player
 all players can use them once added.  Any player can add locations on a single-player 
 server (although I have no idea how this behaves after open-to-lan is activated).
 
+I wish I could make this mod take your horse with you.  Alas, there are bugs in Minecraft itself
+that currently prevent this from working.  If you go home while mounted, you'll automatically
+dismount the horse (or boat or pig) and then do the teleport, leaving your mount behind.
+Because of the possible stress of losing a horse, the operator on a multi-player server does
+receive a message with the coordinates the player left from, so they can go retrieve a 
+sad and lonely horse.
+
+
 Last Build: Nov 21, 2015 against Forge 1.8-11.14.4.1572-mdk
 
 
