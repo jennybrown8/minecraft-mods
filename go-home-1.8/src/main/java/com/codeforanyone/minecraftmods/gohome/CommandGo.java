@@ -5,7 +5,10 @@ import java.util.SortedSet;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -54,15 +57,15 @@ public class CommandGo extends CommandBase {
 	@Override
 	public void execute(ICommandSender sender, String[] args) throws CommandException {
 		EntityPlayer player = (EntityPlayer) sender;
-		System.out.println("Player " + player.getName() + " is running /go");
-		System.out.println("Is player an op? " + MCUtil.isOp(player));
+		// System.out.println("Player " + player.getName() + " is running /go");
+		// System.out.println("Is player an op? " + MCUtil.isOp(player));
 
 		// TODO - Handle operator-only locations and single-player mode
 		NamedLocations globalLocations = Storage.forGlobal(sender.getEntityWorld());
 		NamedLocations sameDimension = Storage.forWorld(sender.getEntityWorld());
 
 		if (args.length < 1) {
-			listNames(globalLocations, sameDimension, player);
+			listNamdLocationNames(globalLocations, sameDimension, player);
 		} else if (args.length == 1) {
 			teleport(sender, args[0], sameDimension, globalLocations);
 		} else if (args.length == 2 && args[0].equals("add")) {
@@ -116,9 +119,9 @@ public class CommandGo extends CommandBase {
 						"Cannot add: Location is not safe.  Make sure you have a solid floor and air above your head."));
 			} else {
 				locations.saveSharedLocation(player, nl);
-				player.addChatComponentMessage(new ChatComponentText("Added location " + loc + " as ("
-						+ MCUtil.dimensionName(player.dimension) + " " + player.getPosition().getX() + ","
-						+ player.getPosition().getY() + "," + player.getPosition().getZ() + ")"));
+				player.addChatComponentMessage(new ChatComponentText("Added location " + loc + " as "
+						+ prettyPlaceString(crossDimensional, player.dimension, player.getPosition().getX(),
+								player.getPosition().getY(), player.getPosition().getZ())));
 			}
 		}
 	}
@@ -143,35 +146,87 @@ public class CommandGo extends CommandBase {
 			NamedLocations globalLocations) {
 		EntityPlayer player = (EntityPlayer) sender;
 
-		NamedLocation nl = this.get(sender, loc, inDimension, globalLocations);
-		if (nl == null) {
-			player.addChatComponentMessage(new ChatComponentText("Invalid location " + loc));
+		NamedLocation namedLocation = this.get(sender, loc, inDimension, globalLocations);
+		if (namedLocation == null) {
+			player.addChatComponentMessage(new ChatComponentText("Unknown location name: " + loc));
 			return;
 		}
-		BlockPos pos = nl.getBlockPos();
+		BlockPos destination = namedLocation.getBlockPos();
 		World playerWorld = player.getEntityWorld();
-		if (!nl.isSafeLanding(playerWorld)) {
+		if (!namedLocation.isSafeLanding(playerWorld)) {
 			player.addChatComponentMessage(new ChatComponentText(
-					"Uh-oh! Location " + loc + " is no longer a safe landing!  Canceling teleport to " + nl));
+					"Uh-oh! Location " + loc + " is not a safe landing!  Canceling teleport to " + namedLocation));
 			return;
 		}
 
-		if (player.ridingEntity != null) {
+		boolean playerWasRidingAHorse = player.isRiding() && player.ridingEntity instanceof EntityHorse;
+		if (player.isRiding()) {
+			// Theoretically, just dismounting should work. But it doesn't. The
+			// rider gets stuck on the mount.
 			player.dismountEntity(player.ridingEntity);
-		}
 
-		int destinationDimension = nl.getDimension();
-		String dimName = MCUtil.dimensionName(destinationDimension);
+			// Calling mountEntity(null) seems to trigger an update packet to
+			// the server, or maybe an EntityMountEvent, so both agree the rider
+			// is fully dismounted, solving the bug.
+			player.mountEntity(null);
+		}
+		// System.out.println("Is player still riding an entity? " +
+		// player.ridingEntity + " isRiding " + player.isRiding());
+
+		int comingFromDimension = player.dimension;
+		int destinationDimension = namedLocation.getDimension();
 		boolean sameDimension = (destinationDimension == player.dimension);
 		if (destinationDimension != player.dimension) {
 			player.travelToDimension(destinationDimension);
 		}
-		player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5);
-		player.addChatComponentMessage(new ChatComponentText("Teleporting you to " + loc + " " + " ("
-				+ (!sameDimension ? dimName + " " : "") + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")"));
+		BlockPos comingFrom = player.getPosition();
+		player.setPositionAndUpdate(destination.getX() + 0.5, destination.getY() + 0.1, destination.getZ() + 0.5);
+		String msg = "Teleporting " + player.getName() + " from "
+				+ prettyPlaceString(!sameDimension, comingFromDimension, comingFrom.getX(), comingFrom.getY(),
+						comingFrom.getZ())
+				+ " to " + loc + " " + prettyPlaceString(!sameDimension, destinationDimension, destination.getX(),
+						destination.getY(), destination.getZ());
+		player.addChatComponentMessage(new ChatComponentText(msg));
+
+		if (playerWasRidingAHorse) {
+			announceToOperators(player, "Warning: Player teleported while riding, leaving a horse behind in "
+					+ MCUtil.dimensionName(comingFromDimension) + ". " + msg);
+		}
+
 	}
 
-	private void listNames(NamedLocations globalLocations, NamedLocations inDimension, EntityPlayer player) {
+	private String prettyPlaceString(boolean showDim, int dimension, int x, int y, int z) {
+		return "(" + (showDim ? MCUtil.dimensionName(dimension) + " " : "") + x + ", " + y + ", " + z + ")";
+
+	}
+
+	private void announceToOperators(EntityPlayer sender, String teleportMessage) {
+		String modMessage = "[go-home mod] " + teleportMessage;
+		System.out.println(modMessage); // for the server logs.
+		String[] opers = MinecraftServer.getServer().getConfigurationManager().getOppedPlayerNames();
+		for (int i = 0; i < opers.length; i++) {
+			EntityPlayer opPlayer = ((EntityPlayerMP) sender).mcServer.getConfigurationManager()
+					.getPlayerByUsername(opers[i]);
+			// any logged in operators might be able to help retrieve a horse.
+			opPlayer.addChatComponentMessage(new ChatComponentText(modMessage));
+		}
+	}
+
+	// public static void Whisper(EntityPlayer fromPlayer, EntityPlayer
+	// toPlayer, String theMessage) {
+	// CommandMessage cm = new CommandMessage();
+	// String[] args = new String[] { toPlayer.getDisplayNameString(),
+	// theMessage };
+	// try {
+	// cm.execute(fromPlayer, args);
+	// } catch (CommandException e) {
+	// e.printStackTrace();
+	// return;
+	// }
+	// }
+
+	private void listNamdLocationNames(NamedLocations globalLocations, NamedLocations inDimension,
+			EntityPlayer player) {
 		SortedSet<String> globalNames = globalLocations.list(player, true);
 		SortedSet<String> names = inDimension.list(player, false);
 		player.addChatComponentMessage(new ChatComponentText("Where to?\n" + join(globalNames) + join(names)));
