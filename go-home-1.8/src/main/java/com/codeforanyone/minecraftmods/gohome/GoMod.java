@@ -28,7 +28,7 @@ public class GoMod {
 	// register commands here
 	@EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {
-		System.out.println("Go - registering /go command for world " + event.getServer().getWorldName());
+		System.out.println("Go - registering /go command for world ");
 		gocommand = new CommandGo();
 		event.registerServerCommand(gocommand);
 	}
