@@ -1,4 +1,4 @@
-package com.codeforanyone.minecraftmods.go;
+package com.codeforanyone.minecraftmods.gohome;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

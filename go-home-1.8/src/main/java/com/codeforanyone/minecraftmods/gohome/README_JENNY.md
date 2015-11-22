@@ -51,19 +51,20 @@ receive a message with the coordinates the player left from, so they can go retr
 sad and lonely horse.
 
 
-Last Build: Nov 21, 2015 against Forge 1.8-11.14.4.1572-mdk
+Last Build: Nov 21, 2015 against Forge 1.8-11.14.4.1572-mdk for Minecraft 1.8
 
 
-Getting Started After a Forge Update
--------------------------------------
+Developer: Getting Started After a Forge Update
+------------------------------------------------
 
 1. Download the latest MDK (mod dev kit) or source build from Forge.
 2. Unzip it somewhere useful within the workspace.
-3. Migrate the src/main/* folders in, using git or whatever.
-4. Make sure everything compiles.
-5. Then build and test.
+3. Migrate the src/main/* folders in, using a symlink to the git repo or whatever.
+4. Modify build.gradle to the proper mod name and version to match GoMod.java contents.
+5. Make sure everything compiles.
+6. Then build and test.
 
-This git repository intentionally does not include the forge bits as they're easily extracted and inconvenient to
+This git repository intentionally does not include the forge and gradle bits as they're easily extracted and inconvenient to
 keep up to date via git.
 
 

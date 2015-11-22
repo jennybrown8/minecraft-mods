@@ -1,11 +1,11 @@
 [
 {
-  "modid": "gomod",
-  "name": "Go",
-  "description": "Maintains a list of named locations for teleport",
+  "modid": "gohome",
+  "name": "Go Home",
+  "description": "Provides /go home for teleport to world spawn, and maintains a list of named locations for teleport",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/jennybrown8/minecraft-mods/blob/master/go-home-1.8/src/main/java/com/codeforanyone/minecraftmods/gohome/README_JENNY.md",
   "updateUrl": "",
   "authorList": ["PathmakerJen"],
   "credits": "Forge and FML",

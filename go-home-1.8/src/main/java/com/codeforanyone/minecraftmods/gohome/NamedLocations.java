@@ -1,4 +1,4 @@
-package com.codeforanyone.minecraftmods.go;
+package com.codeforanyone.minecraftmods.gohome;
 
 import java.util.HashMap;
 import java.util.Map;

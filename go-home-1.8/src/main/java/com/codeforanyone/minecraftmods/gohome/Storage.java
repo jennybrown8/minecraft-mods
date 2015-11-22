@@ -1,4 +1,4 @@
-package com.codeforanyone.minecraftmods.go;
+package com.codeforanyone.minecraftmods.gohome;
 
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
