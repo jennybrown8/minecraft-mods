@@ -41,7 +41,7 @@ to the game.
 
 Right now, only operators are able to add/remove named locations on multi-player servers, but 
 all players can use them once added.  Any player can add locations on a single-player 
-server (although I have no idea how this behaves after open-to-lan is activated).
+server (although I have no idea how this behaves after open-to-LAN is activated).
 
 I wish I could make this mod take your horse with you.  Alas, there are bugs in Minecraft itself
 that currently prevent this from working.  If you go home while mounted, you'll automatically
