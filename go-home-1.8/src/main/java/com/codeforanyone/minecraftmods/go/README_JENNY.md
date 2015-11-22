@@ -1,23 +1,35 @@
 Go-Home Mod Features
 ----------------------
-The `/go home` command teleports you to world-spawn as long as it's safe to land.  Safe: Solid 
-block to stand on, (optionally water at your feet, but solid beneath,) air to breathe, air 
+The `/go home` command teleports you to world-spawn as long as it's safe to land.  
+
+This is highly convenient for young children or inexperienced players who are afraid to wander
+and possibly get lost.  By typing `/go home` they can always return to the main base built near
+world-spawn.  It's particularly useful for children on small, family-owned servers, where play is 
+largely collaborative and they appreciate being able to get back to safety from anywhere,
+including from the nether.
+
+Teleport works as long as the landing spot is safe. 
+
+Safe means: Solid  block to stand on, (optionally water at your feet, but solid beneath,) air to breathe, air 
 above your head, and not standing in fire or lava.  No blocks intersecting the player's 
 body when they land (except water), and room to jump up one block.  They might be unhappily buried inside 
 a hill in the dark, but they won't hit an insta-death unless a complex intentional trap is present.
+Water at the feet is actually useful if you expect to have players coming back from the nether on fire.
 
 Since the home location is exactly world spawn, you can lock this region on a multi-player server so
-that other players can't set traps.  Note that when you enter a world the first time, you spawn within
-a many-block radius near, but not exactly at, world spawn.  It may be worthwhile to use a world
-editor to move the world spawn somewhere useful and more easily accessed, then protect it, and then
-build a base nearby for newly hatched players.
+that other players can't set traps or mess up the landing zone.  Note that when you enter a world 
+the first time, you spawn within a many-block radius near, but not exactly at, world spawn.  It may 
+be worthwhile to use a world editor to move the world spawn somewhere useful and more easily 
+accessed, then protect it, and then build a base nearby for newly hatched players.
 
-The `/go add`, `/go rm`, `/go add-global`, and `/go rm-global` are used to 
-save named locations (besides "home" which is reserved).  Global locations work 
-cross-dimensionally, while non-global ones only work within the same dimension.
+The `/go add`, `/go rm`, `/go add-global`, and `/go rm-global` are used by operators (in multi-player) 
+or by anyone (in single-player) to save additional named locations (besides "home" which is reserved).  
+
+Global locations work  cross-dimensionally, while non-global ones only work within the same dimension.
+
 Right now, only operators are able to add/remove named locations on multi-player servers, but 
 all players can use them once added.  Any player can add locations on a single-player 
-server (I have no idea how this behaves after open-to-lan is activated).
+server (although I have no idea how this behaves after open-to-lan is activated).
 
 Last Build: Nov 21, 2015 against Forge 1.8-11.14.4.1572-mdk
 
