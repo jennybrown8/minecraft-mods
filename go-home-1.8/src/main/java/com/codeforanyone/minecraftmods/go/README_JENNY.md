@@ -3,8 +3,14 @@ Go-Home Mod Features
 The `/go home` command teleports you to world-spawn as long as it's safe to land.  Safe: Solid 
 block to stand on, (optionally water at your feet, but solid beneath,) air to breathe, air 
 above your head, and not standing in fire or lava.  No blocks intersecting the player's 
-body when they land, and room to jump up one block.  They might be unhappily buried inside 
-a hill in the dark, but they won't insta-death unless a complex intentional trap is present.
+body when they land (except water), and room to jump up one block.  They might be unhappily buried inside 
+a hill in the dark, but they won't hit an insta-death unless a complex intentional trap is present.
+
+Since the home location is exactly world spawn, you can lock this region on a multi-player server so
+that other players can't set traps.  Note that when you enter a world the first time, you spawn within
+a many-block radius near, but not exactly at, world spawn.  It may be worthwhile to use a world
+editor to move the world spawn somewhere useful and more easily accessed, then protect it, and then
+build a base nearby for newly hatched players.
 
 The `/go add`, `/go rm`, `/go add-global`, and `/go rm-global` are used to 
 save named locations (besides "home" which is reserved).  Global locations work 
