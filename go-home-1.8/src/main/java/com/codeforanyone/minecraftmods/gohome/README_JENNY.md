@@ -101,7 +101,9 @@ Regression Test Cases
 12. Adjust the world spawn area to be safe but also have water source block at knee level.
 13. Try `/go home` from the overworld and see that you safely land in the water.
 14. Walk somewhere else.  Create a boat, and ride it in the water.  Try `/go home` and see it dismount, then teleport.
-15. Spawn in a horse and tame it and saddle it. Try `/go home` while mounted.  You should successfully unmount and then teleport.
+15. Spawn in a horse and tame it and saddle it. Try `/go home` while mounted.  You should successfully unmount and then teleport.  The server log should have a message saying a player teleported leaving a horse behind.  If 
+testing on a multi-player server, any server operator logged in while the player does that should receive
+a chat message indicating the same.  Non-operators should not get the message.
 
 ### Testing add + rm (rm/remove/del/delete aliases):
 
