@@ -66,8 +66,8 @@ Developer: Getting Started After a Forge Update
 5. Make sure everything compiles.
 6. Then build and test.
 
-This git repository intentionally does not include the forge and gradle bits as they're easily extracted and inconvenient to
-keep up to date via git.
+This git repository intentionally does not include the forge and gradle bits as 
+they're easily extracted and inconvenient to keep up to date via git.
 
 
 Building
