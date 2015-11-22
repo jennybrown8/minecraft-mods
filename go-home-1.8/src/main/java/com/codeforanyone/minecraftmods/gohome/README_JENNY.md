@@ -8,7 +8,7 @@ world-spawn.  It's particularly useful for children on small, family-owned serve
 largely collaborative and they appreciate being able to get back to safety from anywhere,
 including from the nether.
 
-Teleport works as long as the landing spot is safe. 
+Teleport works as long as the landing spot is safe.  If it is unsafe, teleport is denied with a message.
 
 Safe means: Solid  block to stand on, (optionally water at your feet, but solid beneath,) air to breathe, air 
 above your head, and not standing in fire or lava.  No blocks intersecting the player's 
@@ -19,6 +19,7 @@ as it will immediately put out their fire.
 
 If your world spawn lands somewhere weird, or the landscape is changed, the player might be unhappily buried inside 
 a hill in the dark, but they won't hit an insta-death unless a complex intentional trap is present.
+The teleport will simply refuse to go, if it can't ensure player safety to a reasonable degree.
 
 Since the home location is exactly world spawn, you can lock this region on a multi-player server so
 that other players can't set traps or mess up the landing zone.  Note that when you enter a world 
