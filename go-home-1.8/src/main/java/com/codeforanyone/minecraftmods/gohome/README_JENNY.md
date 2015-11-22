@@ -91,15 +91,17 @@ Regression Test Cases
 2. Mod registers itself with Forge.
 3. Type `/go` - you should see a list of options such as home.
 4. Type `/go home` - you should see either a successful teleport or a meaningful unsafe-location warning and coordinates.
-5. Go to world spawn and dig it out if it's buried in a hill or something stupid like that.
+5. Go to world spawn and dig it out if it's buried in a hill or something stupid like that. Make it safe.
 6. Type `/go home` - you should be able to work towards a safe landing and a successful teleport.
 7. Use `/go home` from the overworld successfully.
 8. Use `/go home` from the nether successfully and see it change to the overworld.
-9. Make the spawn location unsafe.  
+9. Make the spawn location unsafe.
 10. Try `/go home` from the overworld and see it blocked.
 11. Try `/go home` from the nether and see it blocked.
-12. Create a boat, and ride it in the water.  Try `/go home` and see it dismount, then teleport.
-13. Spawn in a horse and tame it and saddle it. Try `/go home` while mounted.  You should successfully unmount and then teleport.
+12. Adjust the world spawn area to be safe but also have water source block at knee level.
+13. Try `/go home` from the overworld and see that you safely land in the water.
+14. Walk somewhere else.  Create a boat, and ride it in the water.  Try `/go home` and see it dismount, then teleport.
+15. Spawn in a horse and tame it and saddle it. Try `/go home` while mounted.  You should successfully unmount and then teleport.
 
 ### Testing add + rm (rm/remove/del/delete aliases):
 
