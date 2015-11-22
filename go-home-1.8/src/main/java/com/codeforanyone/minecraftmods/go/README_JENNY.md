@@ -12,20 +12,32 @@ Teleport works as long as the landing spot is safe.
 
 Safe means: Solid  block to stand on, (optionally water at your feet, but solid beneath,) air to breathe, air 
 above your head, and not standing in fire or lava.  No blocks intersecting the player's 
-body when they land (except water), and room to jump up one block.  They might be unhappily buried inside 
+body when they land (except water), and room to jump up one block.  Normally this would be located
+in an open field, at surface level, with clear signs indicating the direction to the main base.
+Water at the feet is actually useful if you expect to have players coming back from the nether on fire,
+as it will immediately put out their fire.
+
+If your world spawn lands somewhere weird, or the landscape is changed, the player might be unhappily buried inside 
 a hill in the dark, but they won't hit an insta-death unless a complex intentional trap is present.
-Water at the feet is actually useful if you expect to have players coming back from the nether on fire.
 
 Since the home location is exactly world spawn, you can lock this region on a multi-player server so
 that other players can't set traps or mess up the landing zone.  Note that when you enter a world 
 the first time, you spawn within a many-block radius near, but not exactly at, world spawn.  It may 
 be worthwhile to use a world editor to move the world spawn somewhere useful and more easily 
-accessed, then protect it, and then build a base nearby for newly hatched players.
+accessed, then protect it, and then build a base nearby for newly hatched players.  Be aware that if
+you build a base too close to a protected world spawn, non-operator players won't be able to 
+open fences and doors and chests.  So better to leave the landing zone outside in the field and 
+provide a sidewalk back to base.
+
+The `/go home` command is always present, and always points to world-spawn.  It currently cannot be changed.
+(However, you can move world spawn with a world editor.)
 
 The `/go add`, `/go rm`, `/go add-global`, and `/go rm-global` are used by operators (in multi-player) 
 or by anyone (in single-player) to save additional named locations (besides "home" which is reserved).  
 
-Global locations work  cross-dimensionally, while non-global ones only work within the same dimension.
+Global locations work cross-dimensionally, while non-global ones only work within the same dimension.
+Do note that `/go home` is in fact a way to escape The End without a portal, thus adding a serious cheat
+to the game.
 
 Right now, only operators are able to add/remove named locations on multi-player servers, but 
 all players can use them once added.  Any player can add locations on a single-player 
