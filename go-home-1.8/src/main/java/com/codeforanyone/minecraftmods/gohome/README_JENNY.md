@@ -51,7 +51,7 @@ Because of the possible stress of losing a horse, the operator on a multi-player
 receive a message with the coordinates the player left from, so they can go retrieve a 
 sad and lonely horse.
 
-[Download gohome-1.1.jar](https://github.com/jennybrown8/minecraft-mods/blob/master/dist/gohome-1.1.jar?raw=true)
+[Download gohome-1.1.jar for Minecraft 1.8 and Forge](https://github.com/jennybrown8/minecraft-mods/blob/master/dist/gohome-1.1.jar?raw=true)
 
 Last Build: Nov 21, 2015 against Forge 1.8-11.14.4.1572-mdk for Minecraft 1.8
 
