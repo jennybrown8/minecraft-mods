@@ -98,8 +98,8 @@ Regression Test Cases
 9. Make the spawn location unsafe.  
 10. Try `/go home` from the overworld and see it blocked.
 11. Try `/go home` from the nether and see it blocked.
-12. Spawn in a horse and tame it and saddle it.
-13. Try `/go home` while mounted.  You should successfully unmount and then teleport.
+12. Create a boat, and ride it in the water.  Try `/go home` and see it dismount, then teleport.
+13. Spawn in a horse and tame it and saddle it. Try `/go home` while mounted.  You should successfully unmount and then teleport.
 
 ### Testing add + rm (rm/remove/del/delete aliases):
 
@@ -118,7 +118,8 @@ Regression Test Cases
 2. Walk somewhere interesting. Type `/go add-global testbase` to add a new location where you're standing.
 3. Type `/go` to list the named locations.  Was it properly added?
 4. Walk somewhere else.  Type `/go testbase` to see if it takes you back to the right spot.
-5. This was an any-dimension name.  Go to the nether and type `/go` - it should be listed as an option.  
+5. This was an any-dimension name.  Go to the nether and type `/go` - it should be listed as an option, with the dimension name shown for 
+any other-dimension location.
 6. Try typing `/go testbase` and it should cross-dimensional teleport you to the right location.
 7. Type `/go rm-global testbase` and then `/go` to check that it was properly deleted.  Try `/go testbase` to confirm it's really gone.
 8. Go to the nether.  Create a named location there `/go add-global nether`  Go to the overworld.  Use `/go nether` and confirm it works.
